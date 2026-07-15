@@ -1,13 +1,38 @@
 from bs4 import BeautifulSoup
 import requests
+import time
+import os
 
-html_text=requests.get('https://books.toscrape.com/').text
-soup=BeautifulSoup(html_text, 'lxml')
-books = soup.find_all('article', class_='product_pod')
-for book in books:
-    book_name = book.find('h3').a['title']
-    price = book.find('p', class_='price_color').text.strip()
-    print(f'''
-Book Name: {book_name}
-Price: {price}
-''')
+print('Put a book title keyword that you want to filter out')
+unwanted_keyword = input('>')
+print(f'Filtering out books containing: {unwanted_keyword}\n')
+
+def find_books():
+    html_text=requests.get('https://books.toscrape.com/').content
+    soup=BeautifulSoup(html_text, 'lxml')
+    books = soup.find_all('article', class_='product_pod')
+    for count, book in enumerate(books, start=1):
+        book_name = book.find('h3').a['title']
+        if unwanted_keyword.lower() not in book_name.lower():
+            price = book.find('p', class_='price_color').text.strip()
+            
+            # Ensure the directory exists
+            os.makedirs('posts', exist_ok=True)
+            # Remove characters that are invalid in Windows filenames
+            clean_name = book_name.replace(':', '').replace('?', '')
+            
+            with open(f'posts/{count}-{clean_name}.txt', 'w', encoding='utf-8') as f:
+                f.write(book_name+'\n'+price+'\n') 
+            print(f'file saved: {count}-{clean_name}.txt')
+            print(f'''
+            Book {count}
+            Book Name: {book_name}
+            Price: {price}
+            ''')
+
+if __name__ == '__main__':  #code inside this block only runs when script is executed directly
+    while True:
+        find_books()
+        time_wait=10
+        print(f'Waiting {time_wait} minutes...')
+        time.sleep(time_wait * 60)
