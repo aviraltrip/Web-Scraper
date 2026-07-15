@@ -3,7 +3,7 @@ import requests
 import time
 import os
 
-print('Put a book title keyword that you want to filter out')
+print('Put a book title that you want to filter out')
 unwanted_keyword = input('>')
 print(f'Filtering out books containing: {unwanted_keyword}\n')
 
@@ -16,9 +16,7 @@ def find_books():
         if unwanted_keyword.lower() not in book_name.lower():
             price = book.find('p', class_='price_color').text.strip()
             
-            # Ensure the directory exists
             os.makedirs('posts', exist_ok=True)
-            # Remove characters that are invalid in Windows filenames
             clean_name = book_name.replace(':', '').replace('?', '')
             
             with open(f'posts/{count}-{clean_name}.txt', 'w', encoding='utf-8') as f:
@@ -30,7 +28,7 @@ def find_books():
             Price: {price}
             ''')
 
-if __name__ == '__main__':  #code inside this block only runs when script is executed directly
+if __name__ == '__main__':  #code in dis block only runs when script executed directly
     while True:
         find_books()
         time_wait=10
