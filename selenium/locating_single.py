@@ -9,7 +9,10 @@ driver = webdriver.Chrome()
 query="laptop"
 driver.get(f"https://www.amazon.in/s?k={query}&crid=2RKOOCZHIKESC&sprefix=lapt%2Caps%2C337&ref=nb_sb_noss_2")
 
-elem = driver.find_element(By.CLASS_NAME, "a-price")
-print(elem.text)
+elems = driver.find_elements(By.CLASS_NAME, "a-price")
+print(f"{len(elems)} items found")
+for elem in elems:
+    print(elem.text)
+#print(elem.get_attribute("outerHTML"))
 time.sleep(5)
 driver.close()
