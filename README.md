@@ -2,7 +2,7 @@
 
 Python-based web scraping examples using **BeautifulSoup** (static HTML) and **Selenium** (dynamic pages).
 
----
+--- \
 
 ## 📁 Repository Structure
 
