@@ -13,11 +13,16 @@ query = "laptop"
 file = 0
 
 for i in range(1, 20):
+    if file >= 50:
+        break
+        
     driver.get(f"https://www.amazon.in/s?k={query}&page={i}&crid=2RKOOCZHIKESC&sprefix=lapt%2Caps%2C337&ref=nb_sb_noss_2")
-    elems = driver.find_elements(By.CLASS_NAME, "a-price")
+    elems = driver.find_elements(By.CSS_SELECTOR, "div[data-component-type='s-search-result']")
     print(f"Page {i}: {len(elems)} items found")
 
     for elem in elems:
+        if file >= 50:
+            break
         try:
             d = elem.get_attribute("outerHTML")
             with open(f"data/{query}_{file}", "w", encoding="utf-8") as f:
